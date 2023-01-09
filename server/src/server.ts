@@ -14,13 +14,16 @@ const CorsOptions = {
     optionsSuccessStatus: 200
 };
 
+
 //TODO:No poner esta linea una vez que se actualice mongoose a la version 7
 mongoose.set('strictQuery', true); //advertencia para notificar sobre el cambio que se hara en mongoose 7
 
+
+
 //Midlewares
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
 app.use(cors(CorsOptions));
 
 
