@@ -1,32 +1,32 @@
 import { Request, Response, NextFunction } from 'express';
-import IError from '../interfaces/IError';
 import jwt from 'jsonwebtoken';
+import IError from '../interfaces/IError';
 
 declare global {
     namespace Express {
-      export interface Request {
-        session: { id: string;};
-      }
-    }
-  }
-
-function checkAuth(req: Request, res: Response, next: NextFunction): void {
-    try {
-        const { token } = req.headers;
-        if (!token) {
-            throw {
-                code: 404,
-                message: 'You are not Authorized'
-            };
+        export interface Request {
+            user: any;
         }
-        const { id } = jwt.verify(
-            token as string,
-            process.env.JWT_SECRET!
-        ) as any;
-        req.session = { id };
-        next();
+    }
+}
+
+const Auth = (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { token } = req.cookies;
+        if (!token) {
+            throw { code: 403, message: 'You are not Authenticated' };
+        }
+        jwt.verify(token as string, process.env.JWT_SECRET!, (err, user) => {
+            if (err) {
+                throw { code: 403, message: 'Token is not valid!' };
+            }
+            req.user = user;
+            next();
+        }) as any;
     } catch (error) {
         const typedError = error as IError;
         res.status(typedError.code).json({ message: typedError.message });
     }
-}
+};
+
+export { Auth };
