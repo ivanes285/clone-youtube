@@ -26,7 +26,12 @@ const UserSchema = new Schema(
             default: 0
         },
         suscribedUsers: {
-            type: [String]
+            type:[Schema.Types.ObjectId],
+            unique: true,
+            default: [],
+            
+            ref: 'Video',
+            
         }
     },
     { timestamps: true, versionKey: false }
