@@ -75,13 +75,12 @@ const getUserById = async (req: Request, res: Response) => {
         const { id } = req.params;
         if (!Types.ObjectId.isValid(id)) {
             throw { code: 400, message: 'ID inválido' };
-          }
+        }
         const userFound = await User.findById(id);
         if (!userFound) {
             throw { code: 404, message: 'User not found' };
         }
-         res.status(200).json(userFound);
-
+        res.status(200).json(userFound);
     } catch (error) {
         const typedError = error as IError;
         res.status(typedError.code).json({ message: typedError.message });
@@ -91,10 +90,10 @@ const getUserById = async (req: Request, res: Response) => {
 const updateUser = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        
+
         if (!Types.ObjectId.isValid(id)) {
             throw { code: 400, message: 'ID inválido' };
-          }
+        }
 
         if ((id as string) !== req.user.id) {
             throw { code: 403, message: 'You can update only your account' };
@@ -115,14 +114,13 @@ const updateUser = async (req: Request, res: Response) => {
     }
 };
 
-
 const deleteUser = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
         if (!Types.ObjectId.isValid(id)) {
             throw { code: 400, message: 'ID inválido' };
-          }
-          if ((id as string) !== req.user.id) {
+        }
+        if ((id as string) !== req.user.id) {
             throw { code: 403, message: 'You can delete only your account' };
         }
 
@@ -140,24 +138,36 @@ const deleteUser = async (req: Request, res: Response) => {
 
 const subscribeUser = async (req: Request, res: Response) => {
     try {
-        const myId=req.user.id;
+        const myId = req.user.id;
         const { id } = req.params;
-        await User.findByIdAndUpdate(myId,{$push:{suscribedUsers:id}});
-         await User.findByIdAndUpdate(id,{$inc:{suscribers:1}})
+        //Me suscribo a un canal y guardo el id del usuario del canal
+
+        // const add = await User.findByIdAndUpdate(myId,{$push:{suscribedUsers:id}});   //$push para agregar un elemento a un array
+        const channel = await User.findById(myId);
+
+        const add = await User.findByIdAndUpdate(
+            myId, { $addToSet: { suscribedUsers: id } },{ new: true }); // $addToSet para agregar un elemento a un array sin repetir
+            
+        if (channel?.suscribedUsers.length === add?.suscribedUsers.length) {
+            throw {code: 403,message: 'You are already suscribed to channel' };
+        }
+
+        //Aumento en 1 el numero de suscriptores del canal al que me suscribo
+        await User.findByIdAndUpdate(id, { $inc: { suscribers: 1 } });
 
         res.status(200).json({ message: 'Subscription succesfull' });
-    } catch (error: any) {
-        //
-        res.status(error.code).json({ message: error.message });
+    } catch (error) {
+        const typedError = error as IError;
+        res.status(typedError.code).json({ message: typedError.message });
     }
 };
 
 const unSubscribeUser = async (req: Request, res: Response) => {
     try {
-        const myId=req.user.id;
+        const myId = req.user.id;
         const { id } = req.params;
-        await User.findByIdAndUpdate(myId,{$pull:{suscribedUsers:id}});
-         await User.findByIdAndUpdate(id,{$inc:{suscribers:-1}})
+        await User.findByIdAndUpdate(myId, { $pull: { suscribedUsers: id } });
+        await User.findByIdAndUpdate(id, { $inc: { suscribers: -1 } });
 
         res.status(200).json({ message: 'Subscription succesfull' });
     } catch (error: any) {
@@ -183,9 +193,6 @@ const disLikeVideo = async (req: Request, res: Response) => {
         //
     }
 };
-
-
-
 
 export {
     signup,
