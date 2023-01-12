@@ -1,4 +1,6 @@
 import { model, Schema } from 'mongoose';
+import mongoautopopulate from 'mongoose-autopopulate';
+
 
 const UserSchema = new Schema(
     {
@@ -27,14 +29,12 @@ const UserSchema = new Schema(
         },
         suscribedUsers: {
             type:[Schema.Types.ObjectId],
-            unique: true,
+            ref: 'User',
             default: [],
-            
-            ref: 'Video',
             
         }
     },
     { timestamps: true, versionKey: false }
 );
-
+UserSchema.plugin(mongoautopopulate);
 export default model('User', UserSchema);

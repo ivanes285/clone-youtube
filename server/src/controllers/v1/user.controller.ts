@@ -141,14 +141,14 @@ const subscribeUser = async (req: Request, res: Response) => {
         const myId = req.user.id;
         const { id } = req.params;
         //Me suscribo a un canal y guardo el id del usuario del canal
-
+        
         // const add = await User.findByIdAndUpdate(myId,{$push:{suscribedUsers:id}});   //$push para agregar un elemento a un array
         const channel = await User.findById(myId);
 
-        const add = await User.findByIdAndUpdate(
+        const add = await User.findByIdAndUpdate( 
             myId, { $addToSet: { suscribedUsers: id } },{ new: true }); // $addToSet para agregar un elemento a un array sin repetir
-            
-        if (channel?.suscribedUsers.length === add?.suscribedUsers.length) {
+          
+        if (channel?.suscribedUsers.length === add?.suscribedUsers.length ) {
             throw {code: 403,message: 'You are already suscribed to channel' };
         }
 

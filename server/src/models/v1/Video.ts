@@ -1,17 +1,21 @@
 import { Schema, model } from 'mongoose';
+import mongoautopopulate from 'mongoose-autopopulate';
 
 const VideoSchema = new Schema(
     {
         userId: {
-            type: String,
-            required: true
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            required: true,
+            autopopulate: true
         },
+        
         title: {
             type: String,
             required: true,
             trim: true
         },
-        description: {
+        desc: {
             type: String,
             required: true
         },
@@ -39,5 +43,6 @@ const VideoSchema = new Schema(
     },
     { timestamps: true, versionKey: false }
 );
+// VideoSchema.plugin(mongoautopopulate);
 
 export default model('Video', VideoSchema);
