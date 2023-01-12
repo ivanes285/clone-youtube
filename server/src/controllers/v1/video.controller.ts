@@ -152,13 +152,12 @@ const sub = async (req: Request, res: Response) => {
         const user = await User.findById(req.user.id);
         const suscribedUsers = user!.suscribedUsers;
        
-//Retorna todos los videos de los canales a los cuales me suscribí
+       //Retorna todos los videos de los canales a los cuales me suscribí
         const list = await Promise.all(
             suscribedUsers.map((chanelId) => {
                 return Video.find({ userId: chanelId })
             })
         );
-
         res.status(200).json(list.flat());
     } catch (error: any) {
         res.status(error.code).json({ message: error.message });
