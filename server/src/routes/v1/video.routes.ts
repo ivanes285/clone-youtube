@@ -12,9 +12,9 @@ import {
     allVideos,
     getByTag,
     search
-} from '../controllers/v1/video.controller';
+} from '../../controllers/v1/video.controller';
 const router = Router();
-import { Auth } from '../middlewares/auth.middleware';
+import { Auth } from '../../middlewares/auth.middleware';
 
 
 //Get all videos for id

@@ -1,8 +1,8 @@
 import { Application } from "express";
-import CommentRoutes from './comment.routes';
-import UserRoutes from './user.routes';
-import VideoRoutes from './video.routes';
-import AuthRoutes from './auth.routes';
+import CommentRoutes from './v1/comment.routes';
+import UserRoutes from './v1/user.routes';
+import VideoRoutes from './v1/video.routes';
+import AuthRoutes from './v1/auth.routes';
 
 
 
