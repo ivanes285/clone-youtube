@@ -187,27 +187,29 @@ const likeVideo = async (req: Request, res: Response) => {
     try {
         const id = req.user.id;
         const videoId = req.params.videoId;
-        await Video.findByIdAndDelete(videoId, {
-            $addtoSet: { likes: id },
+         await Video.findByIdAndUpdate(videoId, {
+            $addToSet: { likes: id },
             $pull: { dislikes: id }
         });
-        res.status(200).json({ message: 'Like succesfull' });
-    } catch (error) {
-        //
+
+        res.status(200).json({ message: 'The video has been liked' });
+    } catch (error: any) {
+        res.status(error.code).json({ message: error.message });
     }
 };
 
 const disLikeVideo = async (req: Request, res: Response) => {
     try {
         const id = req.user.id;
+
         const videoId = req.params.videoId;
-        await Video.findByIdAndDelete(videoId, {
-            $addtoSet: { dislikes: id },
+        await Video.findByIdAndUpdate(videoId, {
+            $addToSet: { dislikes: id },
             $pull: { likes: id }
         });
-        res.status(200).json({ message: 'Like succesfull' });
-    } catch (error) {
-        //
+        res.status(200).json({ message: 'The video has been disliked' });
+    } catch (error: any) {
+        res.status(error.code).json({ message: error.message });
     }
 };
 
