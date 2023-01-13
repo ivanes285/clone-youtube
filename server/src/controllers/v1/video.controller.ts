@@ -88,8 +88,7 @@ const getVideoById = async (req: Request, res: Response) => {
 
 const allVideos = async (req: Request, res: Response) => {
     try {
-        const videos = await Video.find().populate('userId');
-
+        const videos = await Video.find()
         res.status(200).json(videos);
     } catch (error: any) {
         res.status(error.code).json({ message: error.message });
