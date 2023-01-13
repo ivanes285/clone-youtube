@@ -4,6 +4,7 @@ import IError from '../../interfaces/IError';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { Types } from 'mongoose';
+import Video from '../../models/Video';
 
 const signup = async (req: Request, res: Response) => {
     try {
@@ -141,15 +142,21 @@ const subscribeUser = async (req: Request, res: Response) => {
         const myId = req.user.id;
         const { id } = req.params;
         //Me suscribo a un canal y guardo el id del usuario del canal
-        
+
         // const add = await User.findByIdAndUpdate(myId,{$push:{suscribedUsers:id}});   //$push para agregar un elemento a un array
         const channel = await User.findById(myId);
 
-        const add = await User.findByIdAndUpdate( 
-            myId, { $addToSet: { suscribedUsers: id } },{ new: true }); // $addToSet para agregar un elemento a un array sin repetir
-          
-        if (channel?.suscribedUsers.length === add?.suscribedUsers.length ) {
-            throw {code: 403,message: 'You are already suscribed to channel' };
+        const add = await User.findByIdAndUpdate(
+            myId,
+            { $addToSet: { suscribedUsers: id } },
+            { new: true }
+        ); // $addToSet para agregar un elemento a un array sin repetir
+
+        if (channel?.suscribedUsers.length === add?.suscribedUsers.length) {
+            throw {
+                code: 403,
+                message: 'You are already suscribed to channel'
+            };
         }
 
         //Aumento en 1 el numero de suscriptores del canal al que me suscribo
@@ -178,8 +185,13 @@ const unSubscribeUser = async (req: Request, res: Response) => {
 
 const likeVideo = async (req: Request, res: Response) => {
     try {
-        const { id } = req.params;
-        const user = await User.findById(id);
+        const id = req.user.id;
+        const videoId = req.params.videoId;
+        await Video.findByIdAndDelete(videoId, {
+            $addtoSet: { likes: id },
+            $pull: { dislikes: id }
+        });
+        res.status(200).json({ message: 'Like succesfull' });
     } catch (error) {
         //
     }
@@ -187,8 +199,13 @@ const likeVideo = async (req: Request, res: Response) => {
 
 const disLikeVideo = async (req: Request, res: Response) => {
     try {
-        const { id } = req.params;
-        const user = await User.findById(id);
+        const id = req.user.id;
+        const videoId = req.params.videoId;
+        await Video.findByIdAndDelete(videoId, {
+            $addtoSet: { dislikes: id },
+            $pull: { likes: id }
+        });
+        res.status(200).json({ message: 'Like succesfull' });
     } catch (error) {
         //
     }
