@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import Video from '../../models/v1/Video';
+import Video from '../../models/Video';
 import IError from '../../interfaces/IError';
 import { Types } from 'mongoose';
-import User from '../../models/v1/User';
+import User from '../../models/User';
 
 const createVideo = async (req: Request, res: Response) => {
     try {
