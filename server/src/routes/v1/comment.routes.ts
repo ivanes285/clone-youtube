@@ -1,9 +1,11 @@
-import {Router,Request,Response } from 'express';
+import {Router} from 'express';
+import { Auth } from '../../middlewares/auth.middleware';
+import { createComment, deleteComment, getComments} from '../../controllers/v1/comment.controller';
 const router = Router();
-
-router.get('/', (req: Request, res: Response) => {
-    res.json({ message: 'Everything is ok' });
-});
+ 
+router.post('/',Auth, createComment )   
+router.delete('/:id',Auth, deleteComment)  
+router.get('/:videoId',Auth, getComments)  
 
 
 export default router;
