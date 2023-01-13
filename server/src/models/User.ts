@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose';
-import mongoautopopulate from 'mongoose-autopopulate';
+
 
 
 const UserSchema = new Schema(
@@ -36,5 +36,5 @@ const UserSchema = new Schema(
     },
     { timestamps: true, versionKey: false }
 );
-UserSchema.plugin(mongoautopopulate);
+
 export default model('User', UserSchema);

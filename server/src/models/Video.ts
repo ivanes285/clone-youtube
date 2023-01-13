@@ -1,5 +1,4 @@
 import { Schema, model } from 'mongoose';
-import mongoautopopulate from 'mongoose-autopopulate';
 
 const VideoSchema = new Schema(
     {
