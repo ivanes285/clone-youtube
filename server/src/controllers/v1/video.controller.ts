@@ -131,7 +131,7 @@ const addView = async (req: Request, res: Response) => {
 
 const random = async (req: Request, res: Response) => {
     try {
-        const videos = await Video.aggregate([{ $sample: { size: 10 } }]);
+        const videos = await Video.aggregate([{ $sample: { size: 40 } }]);
         res.status(200).json(videos);
     } catch (error: any) {
         res.status(error.code).json({ message: error.message });
@@ -151,14 +151,35 @@ const sub = async (req: Request, res: Response) => {
     try {
         const user = await User.findById(req.user.id);
         const suscribedUsers = user!.suscribedUsers;
-       
-       //Retorna todos los videos de los canales a los cuales me suscribí
+
+        //Retorna todos los videos de los canales a los cuales me suscribí
         const list = await Promise.all(
             suscribedUsers.map((chanelId) => {
-                return Video.find({ userId: chanelId })
+                return Video.find({ userId: chanelId }).sort({ createdAt: 1 });
             })
         );
         res.status(200).json(list.flat());
+    } catch (error: any) {
+        res.status(error.code).json({ message: error.message });
+    }
+};
+
+const getByTag = async (req: Request, res: Response) => {
+    try {
+       
+        const tags =(req.query.tags as string).split(',');
+        const videos = await Video.find({tags:{$in:tags}}).limit(20) // -1 descendente es decir de mayor a menor views
+        res.status(200).json(videos);
+    } catch (error: any) {
+        res.status(error.code).json({ message: error.message });
+    }
+};
+
+const search = async (req: Request, res: Response) => {
+    try {
+        const search =req.query.q;
+        const videos = await Video.find({title:{$regex:search, $options:'i'}}).limit(40); // -1 descendente es decir de mayor a menor views
+        res.status(200).json(videos);
     } catch (error: any) {
         res.status(error.code).json({ message: error.message });
     }
@@ -174,5 +195,7 @@ export {
     addView,
     random,
     trend,
-    sub
+    sub,
+    getByTag,
+    search
 };
