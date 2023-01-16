@@ -1,34 +1,50 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { Menu, Navbar } from "./components";
+import styled, { ThemeProvider } from "styled-components";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { darkTheme, lightTheme } from "./utils/Theme";
+import { useState } from "react";
+import Home from "./pages/Home";
+import SignIn from "./pages/SignIn";
+import Video from "./pages/Video";
+
+const Container = styled.div`
+  display: flex;
+`;
+
+const Main = styled.div`
+  flex: 7;
+  background-color: ${({ theme }) => theme.bg};
+`;
+const Wrapper = styled.div`
+  padding: 22px 96px;
+`;
+
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  const [darkMode, setDarkMode] = useState(true);
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
-  )
+    <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
+      <Container>
+        <Router>
+          <Menu darkMode={darkMode} setDarkMode={setDarkMode} />
+          <Main>
+            <Navbar />
+            <Wrapper>
+              <Routes>
+                <Route path="/">
+                  <Route index element={<Home />} />
+                  <Route path="signin" element={<SignIn />} />
+                  <Route path="video">
+                    <Route path=":id" element={<Video />} />
+                  </Route>
+                </Route>
+              </Routes>
+            </Wrapper>
+          </Main>
+        </Router>
+      </Container>
+    </ThemeProvider>
+  );
 }
 
-export default App
+export default App;
