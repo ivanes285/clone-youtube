@@ -8,7 +8,10 @@ import Video from '../../models/Video';
 
 const signup = async (req: Request, res: Response) => {
     try {
-        const { name, email } = req.body;
+        const { name, email,password } = req.body;
+        if (!email || !password || !name) {
+            throw { code: 400, message: 'Email, Password or Name is empty' };
+        }
         const existUser = await User.findOne({ name });
         const existEmail = await User.findOne({ email });
         if (existUser) {
@@ -24,7 +27,7 @@ const signup = async (req: Request, res: Response) => {
             };
         }
         const salt = await bcrypt.genSalt(10);
-        const hashPassword = await bcrypt.hash(req.body.password, salt);
+        const hashPassword = await bcrypt.hash(password, salt);
         const newUser = new User({ ...req.body, password: hashPassword });
         await newUser.save();
         res.status(200).json({ message: 'User created' });
@@ -37,6 +40,9 @@ const signup = async (req: Request, res: Response) => {
 const signin = async (req: Request, res: Response) => {
     try {
         const { email, password } = req.body;
+        if (!email || !password) {
+            throw { code: 400, message: 'Email or password is empty' };
+        }
         const user = await User.findOne({ email });
         if (!user) {
             throw { code: 400, message: 'User not found' };
