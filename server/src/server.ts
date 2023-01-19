@@ -8,6 +8,7 @@ import RoutesV1 from './routes/index';
 
 dotenv.config();
 const app: Application = express();
+app.set('PORT', process.env.PORT || 4000);
 
 const CorsOptions = {
     origin: '*',
