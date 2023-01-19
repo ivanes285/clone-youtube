@@ -13,10 +13,14 @@
     "@emotion/styled": "^11.10.5",
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.4",
+    "axios": "^1.2.2",
+    "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.6.2",
-    "styled-components": "^5.3.6"
+    "react-toastify": "^9.1.1",
+    "styled-components": "^5.3.6",
+    "timeago.js": "^4.0.2"
   },
   "devDependencies": {
     "@types/node": "^18.11.18",
