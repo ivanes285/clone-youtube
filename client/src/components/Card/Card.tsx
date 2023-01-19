@@ -1,13 +1,21 @@
-import React from 'react';
-import styled from 'styled-components';
+import { IVideo } from "@/intefaces/IVideo";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
+// import moment from 'moment'
+import { IUser } from "@/intefaces/IUser";
+import axios from "axios";
+import { format } from "timeago.js";
 
+export interface CardInterfaceStyle {
+  type?: string;
+}
 export interface CardInterface {
-  type?: string
+  type?: string;
+  video?: IVideo;
 }
 
-
-const Container = styled.div<CardInterface>`
+const Container = styled.div<CardInterfaceStyle>`
   width: ${(props) => props.type !== "sm" && "360px"};
   margin-bottom: ${(props) => (props.type === "sm" ? "10px" : "45px")};
   cursor: pointer;
@@ -15,21 +23,21 @@ const Container = styled.div<CardInterface>`
   gap: 10px;
 `;
 
-const Image = styled.img <CardInterface>`
+const Image = styled.img<CardInterfaceStyle>`
   width: 100%;
   height: ${(props) => (props.type === "sm" ? "120px" : "202px")};
   background-color: #999;
   flex: 1;
 `;
 
-const Details = styled.div<CardInterface>`
+const Details = styled.div<CardInterfaceStyle>`
   display: flex;
   margin-top: ${(props) => props.type !== "sm" && "16px"};
   gap: 12px;
   flex: 1;
 `;
 
-const ChannelImage = styled.img<CardInterface>`
+const ChannelImage = styled.img<CardInterfaceStyle>`
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -56,28 +64,43 @@ const Info = styled.div`
   color: ${({ theme }) => theme.textSoft};
 `;
 
-const Card : React.FC<CardInterface> = ({type}) => {
-	return (
-		<Link to="/video/test" style={{ textDecoration: "none" }}>
-		  <Container type={type}>
-			<Image
-			  type={type}
-			  src=" "
-			/>
-			<Details type={type}>
-			  <ChannelImage
-				type={type}
-				src="https://yt3.ggpht.com/yti/APfAmoE-Q0ZLJ4vk3vqmV4Kwp0sbrjxLyB8Q4ZgNsiRH=s88-c-k-c0x00ffffff-no-rj-mo"
-			  />
-			  <Texts>
-				<Title>Test Video</Title>
-				<ChannelName>Lama Dev</ChannelName>
-				<Info>660,908 views • 1 day ago</Info>
-			  </Texts>
-			</Details>
-		  </Container>
-		</Link>
-	  );
+const Card: React.FC<CardInterface> = ({ type, video }) => {
+  const [channel, setChannel] = useState<IUser>({
+    _id: "",
+    name: "",
+    email: "",
+    password: "",
+    img: "",
+    suscribers: 0,
+    suscribedUsers: [],
+  });
+
+  useEffect(() => {
+    const fecthData = async () => {
+      const res = await axios.get(`http://localhost:4000/api/V1/users/${video!.userId}`);
+      setChannel(res.data);
+    };
+    fecthData();
+  }, [video!.userId]);
+
+  return (
+    <Link to="/video/test" style={{ textDecoration: "none" }}>
+      <Container type={type}>
+        <Image type={type} src={video!.imgUrl} />
+        <Details type={type}>
+          <ChannelImage type={type} src={channel.img} />
+          <Texts>
+            <Title>{video!.title}</Title>
+            <ChannelName>{channel.name}</ChannelName>
+            {/* <Info>{video.views} views • {moment(video.createdAt,"YYYYMMDD").fromNow()}</Info> */}
+            <Info>
+              {video!.views} views • {format(video!.createdAt).toString()}
+            </Info>
+          </Texts>
+        </Details>
+      </Container>
+    </Link>
+  );
 };
 
 export default Card;
