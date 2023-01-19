@@ -21,9 +21,8 @@ export interface MenuInterface {
   setDarkMode?: (darkMode: boolean) => void;
 }
 
-
 const Container = styled.div`
-  flex: 1.3;
+  flex: 1;
   background-color: ${({ theme }) => theme.bgLighter};
   height: 100vh;
   color: ${({ theme }) => theme.text};
@@ -83,80 +82,89 @@ const Title = styled.h2`
   color: #aaaaaa;
   margin-bottom: 20px;
 `;
+
 const Menu: React.FC<MenuInterface> = ({ setDarkMode, darkMode }) => {
   return (
-	<Container>
-	<Wrapper>
-	  <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
-		<Logo>
-		  <Img src={YouTubeLogo} />
-		  Iván Lescano
-		</Logo>
-	  </Link>
-	  <Item>
-		<HomeIcon />
-		Home
-	  </Item>
-	  <Item>
-		<ExploreOutlinedIcon />
-		Explore
-	  </Item>
-	  <Item>
-		<SubscriptionsOutlinedIcon />
-		Subscriptions
-	  </Item>
-	  <Hr />
-	  <Item>
-		<VideoLibraryOutlinedIcon />
-		Library
-	  </Item>
-	  <Item>
-		<HistoryOutlinedIcon />
-		History
-	  </Item>
-	  <Hr />
-	  <Login>
-		Sign in to like videos, comment, and subscribe.
-		<Link to="signin" style={{textDecoration:"none"}}>
-		  <Button>
-			<AccountCircleOutlinedIcon />
-			SIGN IN
-		  </Button>
+    <Container>
+      <Wrapper>
+        <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+          <Logo>
+            <Img src={YouTubeLogo} />
+            Iván Lescano
+          </Logo>
+        </Link>
+        
+        <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+        <Item>
+          <HomeIcon />
+          Home
+        </Item>
+        </Link>
+
+        <Link to="trends" style={{ textDecoration: "none", color: "inherit" }}>
+          <Item>
+            <ExploreOutlinedIcon />
+            Explore
+          </Item>
+        </Link>
+		<Link to="subcriptions" style={{ textDecoration: "none", color: "inherit" }}>
+        <Item>
+          <SubscriptionsOutlinedIcon />
+          Subscriptions
+        </Item>
 		</Link>
-	  </Login>
-	  <Hr />
-	  <Title>BEST OF IVAN</Title>
-	  <Item>
-		<LibraryMusicOutlinedIcon />
-		Music
-	  </Item>
-	  <Item>
-		<SportsBasketballOutlinedIcon />
-		Sports
-	  </Item>
-	  <Item>
-		<LiveTvOutlinedIcon />
-		Live
-	  </Item>
-	  <Hr />
-	  <Item>
-		<SettingsOutlinedIcon />
-		Settings
-	  </Item>
-	  <Item>
-		<FlagOutlinedIcon />
-		Report
-	  </Item>
-	  <Item>
-		<HelpOutlineOutlinedIcon />
-		Help
-	  </Item>
-	  <Item onClick={() => setDarkMode!(!darkMode)}>
-		<SettingsBrightnessOutlinedIcon />
-		{darkMode ? "Light" : "Dark"} Mode
-	  </Item>
-	</Wrapper>
-  </Container>
+        <Hr />
+        <Item>
+          <VideoLibraryOutlinedIcon />
+          Library
+        </Item>
+        <Item>
+          <HistoryOutlinedIcon />
+          History
+        </Item>
+        <Hr />
+        <Login>
+          Sign in to like videos, comment, and subscribe.
+          <Link to="signin" style={{ textDecoration: "none" }}>
+            <Button>
+              <AccountCircleOutlinedIcon />
+              SIGN IN
+            </Button>
+          </Link>
+        </Login>
+        <Hr />
+        <Title>BEST OF IVAN</Title>
+        <Item>
+          <LibraryMusicOutlinedIcon />
+          Music
+        </Item>
+        <Item>
+          <SportsBasketballOutlinedIcon />
+          Sports
+        </Item>
+        <Item>
+          <LiveTvOutlinedIcon />
+          Live
+        </Item>
+        <Hr />
+        <Item>
+          <SettingsOutlinedIcon />
+          Settings
+        </Item>
+        <Item>
+          <FlagOutlinedIcon />
+          Report
+        </Item>
+        <Item>
+          <HelpOutlineOutlinedIcon />
+          Help
+        </Item>
+        <Item onClick={() => setDarkMode!(!darkMode)}>
+          <SettingsBrightnessOutlinedIcon />
+          {darkMode ? "Light" : "Dark"} Mode
+        </Item>
+      </Wrapper>
+    </Container>
   );
 };
 
