@@ -1,6 +1,14 @@
-import React from "react";
+import { IVideo } from "@/intefaces/IVideo";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 import Card from "../components/Card/Card";
+import { ErrorNotification } from "@/components";
+
+export interface HomeInterface {
+  type: string;
+}
 
 const Container = styled.div`
   display: flex;
@@ -8,30 +16,27 @@ const Container = styled.div`
   flex-wrap: wrap;
 `;
 
+const Home: React.FC<HomeInterface> = ({ type }) => {
+  const [videos, setVideos] = useState<IVideo[]>([]);
 
-const Home = () => {
+  useEffect(() => {
+    const fecthData = async () => {
+      try {
+        const res = await axios.get(`http://localhost:4000/api/V1/videos/${type}`);
+        setVideos(res.data);
+      } catch (error: any) {
+        toast.error(error.response.data.message);
+      }
+    };
+    fecthData();
+  }, [type]);
+
   return (
     <Container>
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
+      {videos.map((video) => (
+        <Card key={video._id} video={video} />
+      ))}
+      <ErrorNotification position={"top-right"}/>
     </Container>
   );
 };

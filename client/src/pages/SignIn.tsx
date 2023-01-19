@@ -1,4 +1,19 @@
+import { ErrorNotification } from "@/components";
+import axios from "axios";
+import { useState } from "react";
+import { toast } from "react-toastify";
 import styled from "styled-components";
+
+interface ISignIn {
+  email: string;
+  password: string;
+}
+
+interface ISignUp {
+  name: string;
+  email: string;
+  password: string;
+}
 
 const Container = styled.div`
   display: flex;
@@ -63,18 +78,44 @@ const Link = styled.span`
 `;
 
 const SignIn = () => {
+  const [signin, setSignin] = useState<ISignIn>({ email: "", password: "" });
+
+  const [signup, setSignup] = useState<ISignUp>({ name: "", email: "", password: "" });
+
+  const handleChangeSignin = (e: React.ChangeEvent<HTMLInputElement>) => {
+   const { name, value } = e.target;
+   setSignin({ ...signin, [name]: value})
+  };
+  const handleChangeSignup = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const { name, value } = e.target;
+  setSignup({ ...signup, [name]: value})
+  };
+
+  const handleLogin =async (e:any) => {
+   
+    e.preventDefault();
+    try {
+      const res = await axios.post("http://localhost:4000/api/v1/users/signin", signin);
+      toast.success("Login success")
+    } catch (error:any) {
+      toast.error(error.response.data.message);
+    }
+    
+  }
+
+
   return (
     <Container>
       <Wrapper>
         <Title>Sign in</Title>
-        <SubTitle>to continue to LamaTube</SubTitle>
-        <Input placeholder="username" />
-        <Input type="password" placeholder="password" />
-        <Button>Sign in</Button>
+        <SubTitle>to continue to Dev Ivanes</SubTitle>
+        <Input name="email" type="email" placeholder="email"  required onChange={handleChangeSignin}/>
+        <Input name="password" type="password" placeholder="password" required onChange={handleChangeSignin}/>
+        <Button onClick={handleLogin}>Sign in</Button>
         <Title>or</Title>
-        <Input placeholder="username" />
-        <Input placeholder="email" />
-        <Input type="password" placeholder="password" />
+        <Input name="name" placeholder="username"  onChange={handleChangeSignup}/>
+        <Input name="email" placeholder="email" onChange={handleChangeSignup}/>
+        <Input name="password" type="password" placeholder="password" onChange={handleChangeSignup}/>
         <Button>Sign up</Button>
       </Wrapper>
       <More>
@@ -85,6 +126,7 @@ const SignIn = () => {
           <Link>Terms</Link>
         </Links>
       </More>
+      <ErrorNotification position={"top-right"}/>
     </Container>
   );
 };
