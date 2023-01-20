@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import express, { Application } from 'express';
 import mongoose from 'mongoose';
 import RoutesV1 from './routes/index';
+import morgan from 'morgan';
 
 dotenv.config();
 const app: Application = express();
@@ -26,6 +27,7 @@ mongoose.set('strictQuery', true); //advertencia para notificar sobre el cambio 
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(morgan('dev'))
 app.use(cors(CorsOptions));
 
 
