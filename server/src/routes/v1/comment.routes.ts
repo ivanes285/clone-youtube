@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import { Auth } from '../../middlewares/auth.middleware';
-import { createComment, deleteComment, getComments} from '../../controllers/v1/comment.controller';
+import { createComment, deleteComment, getComments} from '../../controllers';
 const router = Router();
  
 router.post('/',Auth, createComment )   

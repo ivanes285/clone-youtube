@@ -11,7 +11,7 @@ import {
     subscribeUser,
     unSubscribeUser,
     updateUser
-} from '../../controllers/v1/user.controller';
+} from '../../controllers';
 import { Auth } from '../../middlewares/auth.middleware';
 
 //create a new user
