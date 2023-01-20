@@ -11,7 +11,8 @@ const app: Application = express();
 app.set('PORT', process.env.PORT || 4000);
 
 const CorsOptions = {
-    origin: '*',
+    origin: true,
+    credentials: true,  //access-control-allow-credentials:true para habilitar las cookies en el navegador
     optionsSuccessStatus: 200
 };
 
