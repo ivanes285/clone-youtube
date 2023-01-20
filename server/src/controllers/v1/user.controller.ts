@@ -59,7 +59,7 @@ const signin = async (req: Request, res: Response) => {
             expiresIn
         });
         const userFind = await User.findOne({ email }).select('-password');
-        res.cookie('token', token, { httpOnly: true });
+        res.cookie('token', token, { httpOnly: true })
         res.status(200).json(userFind);
     } catch (error) {
         const typedError = error as IError;
