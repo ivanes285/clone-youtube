@@ -1,6 +1,8 @@
 import { ErrorNotification } from "@/components";
+import { loginFailure, loginStart, loginSuccess } from "@/redux/userSlice";
 import axios from "axios";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 
@@ -78,26 +80,30 @@ const Link = styled.span`
 `;
 
 const SignIn = () => {
+  const dispatch = useDispatch();
   const [signin, setSignin] = useState<ISignIn>({ email: "", password: "" });
-
   const [signup, setSignup] = useState<ISignUp>({ name: "", email: "", password: "" });
 
   const handleChangeSignin = (e: React.ChangeEvent<HTMLInputElement>) => {
    const { name, value } = e.target;
    setSignin({ ...signin, [name]: value})
   };
+
   const handleChangeSignup = (e: React.ChangeEvent<HTMLInputElement>) => {
   const { name, value } = e.target;
   setSignup({ ...signup, [name]: value})
   };
 
   const handleLogin =async (e:any) => {
-   
     e.preventDefault();
+    dispatch(loginStart()) 
     try {
+      axios.defaults.withCredentials = true
       const res = await axios.post("http://localhost:4000/api/v1/users/signin", signin);
+      dispatch(loginSuccess(res.data))
       toast.success("Login success")
     } catch (error:any) {
+      dispatch(loginFailure())
       toast.error(error.response.data.message);
     }
     
