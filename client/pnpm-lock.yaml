@@ -19,6 +19,7 @@ specifiers:
   react-redux: ^8.0.5
   react-router-dom: ^6.6.2
   react-toastify: ^9.1.1
+  redux-persist: ^6.0.0
   styled-components: ^5.3.6
   timeago.js: ^4.0.2
   typescript: ^4.9.3
@@ -38,6 +39,7 @@ dependencies:
   react-redux: 8.0.5_ie75ejlwqy5zh3tldgt7pftwcu
   react-router-dom: 6.6.2_biqbaboplfbrettd7655fr4n2y
   react-toastify: 9.1.1_biqbaboplfbrettd7655fr4n2y
+  redux-persist: 6.0.0_react@18.2.0
   styled-components: 5.3.6_biqbaboplfbrettd7655fr4n2y
   timeago.js: 4.0.2
 
@@ -1499,6 +1501,18 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       loose-envify: 1.4.0
+    dev: false
+
+  /redux-persist/6.0.0_react@18.2.0:
+    resolution: {integrity: sha512-71LLMbUq2r02ng2We9S215LtPu3fY0KgaGE0k8WRgl6RkqxtGfl7HUozz1Dftwsb0D/5mZ8dwAaPbtnzfvbEwQ==}
+    peerDependencies:
+      react: '>=16'
+      redux: '>4.0.0'
+    peerDependenciesMeta:
+      react:
+        optional: true
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /redux-thunk/2.4.2_redux@4.2.0:
