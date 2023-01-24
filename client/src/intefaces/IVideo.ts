@@ -4,6 +4,7 @@ export interface IVideo {
     title: string;
     desc: string;
     imgUrl: string;
+    videoUrl: string;
     views: number;
     tags: string[];
     likes: string[];

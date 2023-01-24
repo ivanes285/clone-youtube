@@ -15,6 +15,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import YouTubeLogo from "../../images/logo.png";
+import { AppStore } from "@/redux/store";
+import { useSelector } from "react-redux";
 
 export interface MenuInterface {
   darkMode?: boolean;
@@ -84,6 +86,7 @@ const Title = styled.h2`
 `;
 
 const Menu: React.FC<MenuInterface> = ({ setDarkMode, darkMode }) => {
+  const { currentUser } = useSelector((state: AppStore) => state.user);
   return (
     <Container>
       <Wrapper>
@@ -123,6 +126,8 @@ const Menu: React.FC<MenuInterface> = ({ setDarkMode, darkMode }) => {
           History
         </Item>
         <Hr />
+        { !currentUser &&
+
         <Login>
           Sign in to like videos, comment, and subscribe.
           <Link to="signin" style={{ textDecoration: "none" }}>
@@ -132,7 +137,9 @@ const Menu: React.FC<MenuInterface> = ({ setDarkMode, darkMode }) => {
             </Button>
           </Link>
         </Login>
-        <Hr />
+        
+      }
+      <Hr />
         <Title>BEST OF IVAN</Title>
         <Item>
           <LibraryMusicOutlinedIcon />

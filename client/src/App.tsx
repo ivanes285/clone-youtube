@@ -6,6 +6,7 @@ import { useState } from "react";
 import Home from "./pages/Home";
 import SignIn from "./pages/SignIn";
 import Video from "./pages/Video";
+import Search from "./pages/Search";
 
 
 const Container = styled.div`
@@ -35,6 +36,7 @@ function App() {
                   <Route index element={<Home type="random"/>} />
                   <Route path="trends" element={<Home type="trend" />} />
                   <Route path="subcriptions" element={<Home type="sub" />} />
+                  <Route path="search" element={<Search />} />
                   <Route path="signin" element={<SignIn />} />
                   <Route path="video">
                     <Route path=":id" element={<Video />} />

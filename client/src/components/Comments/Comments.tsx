@@ -1,7 +1,14 @@
-import React from "react";
+import { IComment } from "@/intefaces/IComment";
+import { AppStore } from "@/redux/store";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 import Comment from "../Comment/Comment";
-export interface CommentsInterface {}
+export interface CommentsInterface {
+  videoId: string;
+}
 
 const Container = styled.div``;
 
@@ -27,21 +34,30 @@ const Input = styled.input`
   width: 100%;
 `;
 
+const Comments: React.FC<CommentsInterface> = ({ videoId }) => {
+  const { currentUser } = useSelector((state: AppStore) => state.user);
+  const [comments, setComments] = useState<IComment[]>([]);
+  useEffect(() => {
+    const fecthData = async () => {
+      try {
+        const res = await axios.get(`/api/comments/${videoId}`);
+        setComments(res.data);
+      } catch (error: any) {
+        toast.error(error.response.data.message);
+      }
+    };
+    fecthData();
+  }, []);
 
-const Comments: React.FC<CommentsInterface> = () => {
   return (
     <Container>
       <NewComment>
-        <Avatar src="https://play-lh.googleusercontent.com/MoaYYQjGtmGLhG9HbjCDKyj44kwHj1HfbCI2Am70elRm35vJ-u4y4X5uEJjP97MAAsU" />
+        <Avatar src={currentUser?.img} />
         <Input placeholder="Add a comment..." />
       </NewComment>
-      <Comment />
-      <Comment />
-      <Comment />
-      <Comment />
-      <Comment />
-      <Comment />
-      <Comment />
+      {comments.map((comment) => (
+        <Comment key={comment._id} comment={comment} />
+      ))}
     </Container>
   );
 };

@@ -1,6 +1,14 @@
-import React from 'react';
+import { IComment } from '@/intefaces/IComment';
+import { IUser } from '@/intefaces/IUser';
+import { AppStore } from '@/redux/store';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import styled from 'styled-components';
-export interface CommentInterface {}
+export interface CommentInterface {
+  comment:IComment
+}
 
 const Container = styled.div`
   display: flex;
@@ -36,19 +44,40 @@ const Text = styled.span`
   font-size: 14px;
 `;
 
-const Comment : React.FC<CommentInterface> = () => {
+const Comment : React.FC<CommentInterface> = ({comment}) => {
+  const { currentUser } = useSelector((state: AppStore) => state.user);
+  
+  const [channel, setChannel] = useState<IUser>({
+    _id: "",
+    name: "",
+    email: "",
+    password: "",
+    img: "",
+    suscribers: 0,
+    suscribedUsers: [],
+  });
+
+  useEffect(() => {
+    const fecthComments = async () => {
+      try {
+        const res = await axios.get(`/api/users/${comment.userId}`);
+        setChannel(res.data);
+      } catch (error: any) {
+        toast.error(error.response.data.message);
+      }
+    };
+    fecthComments();
+  }, [comment.userId]);
+  
 	return (
 		<Container>
-		  <Avatar src="https://play-lh.googleusercontent.com/MoaYYQjGtmGLhG9HbjCDKyj44kwHj1HfbCI2Am70elRm35vJ-u4y4X5uEJjP97MAAsU" />
+		  <Avatar src={channel.img} />
 		  <Details>
 			<Name>
-			  John Doe <Date>1 day ago</Date>
+			  {channel.name} <Date> 1 day ago</Date>
 			</Name>
 			<Text>
-			  Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vel, ex
-			  laboriosam ipsam aliquam voluptatem perferendis provident modi, sequi
-			  tempore reiciendis quod, optio ullam cumque? Quidem numquam sint
-			  mollitia totam reiciendis?
+			  {comment.desc}
 			</Text>
 		  </Details>
 		</Container>

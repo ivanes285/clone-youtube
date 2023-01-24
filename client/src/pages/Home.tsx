@@ -22,7 +22,7 @@ const Home: React.FC<HomeInterface> = ({ type }) => {
   useEffect(() => {
     const fecthData = async () => {
       try {
-        const res = await axios.get(`http://localhost:4000/api/V1/videos/${type}`);
+        const res = await axios.get(`/api/videos/${type}`);
         setVideos(res.data);
       } catch (error: any) {
         toast.error(error.response.data.message);

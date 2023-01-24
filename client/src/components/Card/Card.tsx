@@ -12,7 +12,7 @@ export interface CardInterfaceStyle {
 }
 export interface CardInterface {
   type?: string;
-  video?: IVideo;
+  video: IVideo;
 }
 
 const Container = styled.div<CardInterfaceStyle>`
@@ -77,24 +77,24 @@ const Card: React.FC<CardInterface> = ({ type, video }) => {
 
   useEffect(() => {
     const fecthData = async () => {
-      const res = await axios.get(`http://localhost:4000/api/V1/users/${video!.userId}`);
+      const res = await axios.get(`/api/users/${video.userId}`);
       setChannel(res.data);
     };
     fecthData();
-  }, [video!.userId]);
+  }, [video.userId]);
 
   return (
-    <Link to="/video/test" style={{ textDecoration: "none" }}>
+    <Link to={`/video/${video?._id}`} style={{ textDecoration: "none" }}>
       <Container type={type}>
-        <Image type={type} src={video!.imgUrl} />
+        <Image type={type} src={video.imgUrl} />
         <Details type={type}>
           <ChannelImage type={type} src={channel.img} />
           <Texts>
-            <Title>{video!.title}</Title>
+            <Title>{video.title}</Title>
             <ChannelName>{channel.name}</ChannelName>
             {/* <Info>{video.views} views • {moment(video.createdAt,"YYYYMMDD").fromNow()}</Info> */}
             <Info>
-              {video!.views} views • {format(video!.createdAt).toString()}
+              {video.views} views • {format(video.createdAt).toString()}
             </Info>
           </Texts>
         </Details>

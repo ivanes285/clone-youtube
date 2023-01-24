@@ -1,4 +1,3 @@
-import { IUser } from "@/intefaces/IUser";
 import { IVideo } from "@/intefaces/IVideo";
 import { createSlice } from "@reduxjs/toolkit";
 
