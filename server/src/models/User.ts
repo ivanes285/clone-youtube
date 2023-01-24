@@ -32,7 +32,15 @@ const UserSchema = new Schema(
             ref: 'User',
             default: [],
             
-        }
+        },
+        fromGoogle: {
+            type: Boolean,
+            default: false,
+          },
+          fromGitHub: {
+            type: Boolean,
+            default: false,
+          },
     },
     { timestamps: true, versionKey: false }
 );
