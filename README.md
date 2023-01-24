@@ -45,9 +45,6 @@ Despues de clonar el proyecto debemos crear un archivo .env  en donde definiremo
     <img src="./assets/02.png" />
 <p/>
 
-<p align="center">
-    <img src="./assets/03.png" />
-<p/>
 
 
 ### NOTE
