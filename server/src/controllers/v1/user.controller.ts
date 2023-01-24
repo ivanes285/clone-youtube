@@ -54,13 +54,12 @@ const signin = async (req: Request, res: Response) => {
         if (!validPassword) {
             throw { code: 400, message: 'Invalid password' };
         }
-        const expiresIn = 60 * 60;
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET!, {
-            expiresIn
-        });
+        // const expiresIn = 60 * 60;
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET!);
         const userFind = await User.findOne({ email }).select('-password');
         res.cookie('token', token, { httpOnly: true })
         res.status(200).json(userFind);
+
     } catch (error) {
         const typedError = error as IError;
         res.status(typedError.code).json({ message: typedError.message });
@@ -167,7 +166,6 @@ const subscribeUser = async (req: Request, res: Response) => {
 
         //Aumento en 1 el numero de suscriptores del canal al que me suscribo
         await User.findByIdAndUpdate(id, { $inc: { suscribers: 1 } });
-
         res.status(200).json({ message: 'Subscription succesfull' });
     } catch (error) {
         const typedError = error as IError;
